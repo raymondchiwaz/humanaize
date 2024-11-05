@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useUser, SignIn, SignInButton, SignedIn, UserButton } from '@clerk/nextjs';
+import { useUser, SignInButton, SignedIn, UserButton } from '@clerk/nextjs';
 import { Analytics } from "@vercel/analytics/react";
 import { useRouter } from 'next/navigation'
 import Image from "next/image";
@@ -16,7 +16,7 @@ export default function Home() {
   const [text, setText] = useState('');
   const [humanizedText, setHumanizedText] = useState('');
   const [toggleCopy, setToggleCopy] = useState(false);
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { isSignedIn } = useUser();
   const [isUsedOneTime, setIsUsedOneTime] = useState(false);
 
   useEffect(() => {

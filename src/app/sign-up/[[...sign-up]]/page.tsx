@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { SignUp } from '@clerk/nextjs'
 
 export default function SignUpPage() {
