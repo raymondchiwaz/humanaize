@@ -1,16 +1,28 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useUser, SignIn, SignInButton, SignedIn, UserButton } from '@clerk/nextjs';
 import { Analytics } from "@vercel/analytics/react";
+import { useRouter } from 'next/navigation'
 import Image from "next/image";
 import './pages.css';
 
+
 export default function Home() {
+  const router = useRouter()
+
   const [loading, setLoading] = useState(false);
   const [wordCount, setWordCount] = useState(0);
   const [text, setText] = useState('');
   const [humanizedText, setHumanizedText] = useState('');
   const [toggleCopy, setToggleCopy] = useState(false);
+  const { isLoaded, isSignedIn, user } = useUser();
+  const [isUsedOneTime, setIsUsedOneTime] = useState(false);
+
+  useEffect(() => {
+    const usedOneTime = localStorage.getItem('isUsedOneTime') === 'true';
+    setIsUsedOneTime(usedOneTime);
+  }, []);
 
   const humanaizeAiText = async (aiText: string) => {
     console.log('Sending POST request /api/humanaize');
@@ -33,15 +45,26 @@ export default function Home() {
       console.error('Error:', error);
       alert('An error occurred while fetching the reply.');
       return 'No response available';
+    } finally {
+      console.log('POST request /api/humanaize completed');
     }
   };
   
   const handleHumanize = () => {
+    if (isUsedOneTime && !isSignedIn) {
+      router.push('/sign-in');
+      return;
+    }
+
     console.log('Humanizing...');
     setLoading(true);
     humanaizeAiText(text)
       .then((humanized) => {
         setHumanizedText(humanized);
+        if (!isSignedIn) {
+          localStorage.setItem('isUsedOneTime', 'true');
+          setIsUsedOneTime(true);
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -49,7 +72,7 @@ export default function Home() {
       .finally(() => {
         setLoading(false);
       });
-  }
+  };
 
   useEffect(() => {
     const count = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
@@ -73,6 +96,17 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen pb-20 gap-8 p-4 font-[family-name:var(--font-geist-sans)]">
       <Analytics />
+      <div className="absolute top-4 right-8">
+        {!isSignedIn ? (
+          <SignInButton>
+            <button className="bg-foreground text-gray-100 px-4 py-2 rounded-md">Sign In</button>
+          </SignInButton> ) 
+          : (<SignedIn>
+              <UserButton />
+            </SignedIn>)
+        }
+      </div> 
+
       <main className="flex flex-col gap-8 row-start-2 items-center">
         <div className="Editor_title3__hWeAn">
           <h1 className="Editor_editor__header__GIEq6 font-black">Humanize AI text</h1>
