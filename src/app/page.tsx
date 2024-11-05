@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Analytics } from "@vercel/analytics/react";
 import Image from "next/image";
 import './pages.css';
 
@@ -10,14 +11,44 @@ export default function Home() {
   const [text, setText] = useState('');
   const [humanizedText, setHumanizedText] = useState('');
   const [toggleCopy, setToggleCopy] = useState(false);
+
+  const humanaizeAiText = async (aiText: string) => {
+    console.log('Sending POST request /api/humanaize');
+    try {
+      const response = await fetch('/api/humanaize', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ aiText }),
+      });
+
+      if (!response.ok) {
+        throw new Error('API request failed');
+      }
+
+      const data = await response.json();
+      return data.message;
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while fetching the reply.');
+      return 'No response available';
+    }
+  };
   
   const handleHumanize = () => {
     console.log('Humanizing...');
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setHumanizedText(text);
-    }, 3000);
+    humanaizeAiText(text)
+      .then((humanized) => {
+        setHumanizedText(humanized);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   useEffect(() => {
@@ -41,6 +72,7 @@ export default function Home() {
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen pb-20 gap-8 p-4 font-[family-name:var(--font-geist-sans)]">
+      <Analytics />
       <main className="flex flex-col gap-8 row-start-2 items-center">
         <div className="Editor_title3__hWeAn">
           <h1 className="Editor_editor__header__GIEq6 font-black">Humanize AI text</h1>
@@ -74,6 +106,7 @@ export default function Home() {
             <div className="relative">
               <textarea 
                 disabled={true}
+                value={humanizedText}
                 className="bg-white p-4 w-[600px] h-[400px] p-4 border border-solid border-gray-600 rounded-lg focus:outline-none outline-none resize-none focus:ring-2 focus:ring-[#333] focus:border-transparent" 
                 placeholder="Humanized text will appear here">
               </textarea>
@@ -152,6 +185,19 @@ export default function Home() {
           Open Source →
         </a>
       </footer>
+      <script
+        src="https://topmate-embed.s3.ap-south-1.amazonaws.com/v1/topmate-embed.js"
+        user-profile="https://topmate.io/embed/profile/abdibrokhim?theme=D5534D"
+        btn-style='{"backgroundColor":"#fff","color":"#000","border":"1px solid #000"}'
+        embed-version="v1"
+        button-text="Hey, dear! Let's chat."
+        position-right="30px"
+        position-bottom="30px"
+        custom-padding="0px"
+        custom-font-size="16px"
+        custom-font-weight="500"
+        custom-width="200px"
+      ></script>
     </div>
   );
 }
