@@ -16,6 +16,7 @@ export default function Home() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
+      setHumanizedText(text);
     }, 3000);
   }
 
