@@ -7,10 +7,10 @@
 
 <!-- markdownlint-disable MD030 -->
 
-# [![Loom Video Downloader](./public/humanaize_1.png)](https://lovido.vercel.app/)
+# [![HumanAIze AI text](./public/humanaize_1.png)](https://humanaize.vercel.app/)
 
 <p align="center"><strong>
-    Humanize AI text with the smartest AI humanizer! 🚀
+    HumanAIze AI text with the smartest AI humanizer! 🚀
 </strong></p>
 <p align="center"><strong>
     it's Absolutely FREE. 💜
@@ -60,6 +60,7 @@ Here you should put your stuff:
     
 ```shell
 NEXT_PUBLIC_OPENAI_API_KEY=sk-proj-
+NEXT_PUBLIC_AIML_API_KEY=...
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_
 CLERK_SECRET_KEY=sk_test_
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in

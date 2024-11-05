@@ -109,9 +109,9 @@ export default function Home() {
 
       <main className="flex flex-col gap-8 row-start-2 items-center">
         <div className="Editor_title3__hWeAn">
-          <h1 className="Editor_editor__header__GIEq6 font-black">Humanize AI text</h1>
-          <h2 className="Editor_editor__subheader__uH98a font-bold">Humanize AI text with the smartest AI humanizer</h2>
-          <p className="Editor_editor__description__sjr_h">Transform your AI-generated content into natural, human-like text with the ultimate Humanize AI text tool. This ai-to-human text converter effortlessly converts output from ChatGPT, Bard, Jasper, Grammarly, GPT4, and other AI text generators into text indistinguishable from human writing. Achieve 100% originality and enhance your content creation with the best Humanize AI solution available.</p>
+          <h1 className="Editor_editor__header__GIEq6 font-black">HumanAIze AI text</h1>
+          <h2 className="Editor_editor__subheader__uH98a font-bold">HumanAIze AI text with the smartest AI humanizer</h2>
+          <p className="Editor_editor__description__sjr_h">Transform your AI-generated content into natural, human-like text with the ultimate HumanAIze AI text tool. This ai-to-human text converter effortlessly converts output from ChatGPT, Bard, Jasper, Grammarly, GPT4, and other AI text generators into text indistinguishable from human writing. Achieve 100% originality and enhance your content creation with the best HumanAIze AI solution available.</p>
         </div>
         <div className="flex gap-2 items-center flex-col lg:flex-row">
           <div className="bg-white p-4">
