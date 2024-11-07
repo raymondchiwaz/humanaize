@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { systemPrompt } from './utils/instr';
 import { writingSamples } from './utils/samples';
 
-const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+// AI/ML API access to 200+ AI models with one API endpoint
+const apiKey = process.env.NEXT_PUBLIC_AIML_API_KEY;
 
 export async function POST(request: Request) {
     try {
@@ -11,7 +12,7 @@ export async function POST(request: Request) {
         const { aiText } = await request.json();
         console.log("User text: ", aiText);
 
-        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        const response = await fetch("https://api.aimlapi.com/chat/completions", {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${apiKey}`,

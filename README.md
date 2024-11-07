@@ -23,7 +23,7 @@
 ## 🚀 Watch on YouTube
 How to use HumanAIze? Watch on YouTube, A$AP! 🚀
 
-[![Watch on YouTube](https://img.shields.io/badge/Watch%20on-YouTube-red?style=for-the-badge&logo=youtube)]()
+[![Watch on YouTube](https://img.shields.io/badge/Watch%20on-YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/CLrENdjIe58?si=i8k6A2EtXFwc1fSQ)
 
 ## 🐐 A couple of results from real stuff
 
@@ -34,6 +34,9 @@ How to use HumanAIze? Watch on YouTube, A$AP! 🚀
 
 ### Try it now -> [HumanAIze, click here](https://humanaize.vercel.app/) 
 (it's absolutely FREE! 🎉)
+
+### 🚀 Powered by AI/ML API
+With AI/ML API I can access to over 200 AI models with one API endpoint. It's super cool! Now I can switch between models with just one click. 🔥 [Here's is how... click me](https://huggingface.co/spaces/abdibrokhim/ai-sticker-maker/blob/3538c96ae8838c2b4e94977632150f7bd3c87f61/app.py#L117)
 
 ## 📦 Run Locally
 
