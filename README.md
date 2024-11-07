@@ -38,6 +38,8 @@ How to use HumanAIze? Watch on YouTube, A$AP! 🚀
 ### 🚀 Powered by AI/ML API
 With AI/ML API I can access to over 200 AI models with one API endpoint. It's super cool! Now I can switch between models with just one click. 🔥 [Here's is how... click me](https://huggingface.co/spaces/abdibrokhim/ai-sticker-maker/blob/3538c96ae8838c2b4e94977632150f7bd3c87f61/app.py#L117)
 
+Step-by-Step tutorial available on [TUTORIAL.md]().
+
 ## 📦 Run Locally
 
 Clone the repository with:
