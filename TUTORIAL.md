@@ -2,7 +2,11 @@
 
 ## Introduction
 
-In this tutorial, we will build ...
+In this tutorial, we'll build an AI text humanizer tool that can convert AI-generated text into human-like text. We'll use AI/ML API to generate human-like text, Next.js for the frontend, Tailwind CSS for styling, Clerk Auth for user authentication, and Vercel for deployment.
+
+It'll be a comprehensive tutorial that covers everything from setting up the project to deploying it to Vercel.
+
+> it'll be fun! Let's get started! 🚀
 
 ### AI/ML API
 
@@ -43,22 +47,26 @@ Clerk is an authentication platform that provides a range of features for managi
 
 > Documentation: [Clerk](https://docs.clerk.dev/)
 
+Here's a brief tutorial on: [How to create account on Clerk and setup new project](https://medium.com/@abdibrokhim/how-to-create-account-on-clerk-and-setup-a-new-project-532be3545642)
+
 ### Vercel
 
 Vercel is a cloud platform to deploy and host web applications. It offers a range of features, including serverless functions, automatic deployments, and custom domains.
 
 > Documentation: [Vercel](https://vercel.com/docs)
 
+Here's a brief tutorial: [How to Deploy Apps to Vercel with ease](https://medium.com/@abdibrokhim/how-to-deploy-apps-to-vercel-with-ease-93fa0d0bb687)
+
 
 ## Prerequisites
 
 Before we get started, make sure you have the following installed on your machine:
 
-* [Node.js](https://nodejs.org/)
+* [Node.js](https://nodejs.org/). Here's a short tutorial on [How to setup Node.js on my computer with ease.](https://medium.com/@abdibrokhim/how-to-setup-node-js-on-my-computer-with-ease-b5fe9b766513)
 * [npm or yarn](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-* [AI/ML API Key](https://aimlapi.com/?via=ibrohim). Here's is tutorial on [How to get API Key from AI/ML API](https://medium.com/@abdibrokhim/how-to-get-api-key-from-ai-ml-api-225a69d0bb25)
-* [Clerk Auth Account](https://clerk.com/)
-* [Vercel Account](https://vercel.com/)
+* [AI/ML API Key](https://aimlapi.com/?via=ibrohim). Here's a tutorial on [How to get API Key from AI/ML API](https://medium.com/@abdibrokhim/how-to-get-api-key-from-ai-ml-api-225a69d0bb25)
+* [Clerk Auth Account](https://clerk.com/). Here's a brief tutorial on: [How to create account on Clerk and setup new project](https://medium.com/@abdibrokhim/how-to-create-account-on-clerk-and-setup-a-new-project-532be3545642)
+* [Vercel Account](https://vercel.com/). Here's a brief tutorial on: [How to create account on Vercel](https://medium.com/@abdibrokhim/how-to-deploy-apps-to-vercel-with-ease-93fa0d0bb687)
 
 ## Getting Started
 
@@ -257,7 +265,7 @@ You are "I am Human AI," embodying the thought processes, reasoning, and communi
 `;
 ```
 
-> This System Prompt was generated with ChatGPT using Prompt Engineering.
+> This System Prompt was generated with ChatGPT using Prompt Engineering. If you want to learn more about Prompt Engineering. Let me know. It's FREE! 🎉 -> [Learn now!](https://topmate.io/join/abdibrokhim)
 
 Open `samples.ts`, add the following code:
 
@@ -285,7 +293,7 @@ export const writingSamples = [
 
 ### Clerk Auth
 
-Before we move on, let's set up the Clerk Auth for our application.
+Before we move on, let's set up the Clerk Auth for our application. Make sure you already set up a project on Clerk and have the API keys. If not, here's a brief tutorial on: [How to create account on Clerk and setup new project](https://medium.com/@abdibrokhim/how-to-create-account-on-clerk-and-setup-a-new-project-532be3545642)
 
 Install `@clerk/nextjs`. The package to use with Clerk and NextJS.
 
@@ -371,12 +379,324 @@ export default function RootLayout({
 }
 ```
 
+Great! Now, we have set up the Clerk Auth for our application. But, we need to create a few more components to handle the authentication flow. For example: `sign-in` and `sign-up` components.
 
+Let's enter `app` and create a new two files exactly same as this: 
+```bash
+sign-in/[[...sign-in]]/page.tsx
+sign-up/[[...sign-up]]/page.tsx
+```
+> ps: Otherwise it won't work.
 
+Now update `page.tsx` files with the following code corresponding to each file:
+
+```typescript
+// app/sign-in/[[...sign-in]]/page.tsx
+import { SignIn } from '@clerk/nextjs'
+
+export default function SignInPage() {
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center p-24 relative text-white">
+      <div className="flex flex-col items-center justify-center h-full space-y-8">
+        <SignIn />
+      </div>
+    </div>
+  )
+}
+```
+and,
+
+```typescript
+// app/sign-up/[[...sign-up]]/page.tsx
+import { SignUp } from '@clerk/nextjs'
+
+export default function SignUpPage() {
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center p-24 relative text-white">
+      <div className="flex flex-col items-center justify-center h-full space-y-8">
+        <SignUp />
+      </div>
+    </div>
+  );
+}
+```
+
+We are almost there! Now, let's cook the actual HumanAIze AI text tool. Open `page.tsx` file inside the `app` folder, and add the following code:
+
+```typescript
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { useUser, SignInButton, SignedIn, UserButton } from '@clerk/nextjs';
+import { Analytics } from "@vercel/analytics/react";
+import { useRouter } from 'next/navigation'
+import Image from "next/image";
+import './pages.css';
+```
+
+We have just imported the necessary components and libraries.
+
+Now, remove everything inside `Home` component. We'll do a fresh start.
+
+Firstly, let's create a state to store the user input and the AI-generated text, and other essential states.
+
+```typescript
+const router = useRouter()
+
+const [loading, setLoading] = useState(false);
+const [wordCount, setWordCount] = useState(0);
+const [text, setText] = useState('');
+const [humanizedText, setHumanizedText] = useState('');
+const [toggleCopy, setToggleCopy] = useState(false);
+const { isSignedIn } = useUser();
+```
+
+Now, go down `return` statement and call the `Auth` stuff:
+
+```typescript
+<div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen pb-28 gap-8 p-4 font-[family-name:var(--font-geist-sans)]">
+  <div className="absolute top-4 right-8">
+    {!isSignedIn ? (
+      <SignInButton>
+        <button className="bg-foreground text-gray-100 px-4 py-2 rounded-md">Sign In</button>
+      </SignInButton> ) 
+      : (<SignedIn>
+          <UserButton />
+        </SignedIn>)
+    }
+  </div> 
+</div> 
+```
+
+Ok, we have set up the `Auth` stuff. 
+
+Now, we'll create two `textarea`s one one the left side for user input and the other on the right side for the AI-generated text.
+
+It gives a nice user experience to see the input and output side by side.
+
+```typescript
+        <div className="flex gap-2 items-center flex-col lg:flex-row">
+          <div className="bg-white p-4">
+            <div className="relative">
+              <textarea
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                className="w-[600px] h-[400px] p-4 pb-12 border border-solid border-gray-600 rounded-lg focus:outline-none resize-none focus:ring-2 focus:ring-[#333] focus:border-transparent"
+                placeholder="Paste your AI-generated text here"
+              ></textarea>
+              <div className="absolute bottom-4 left-4 bg-foreground px-2 py-1 rounded-md text-sm text-gray-100 shadow">
+                {wordCount} words
+              </div>
+              <button
+                className={`absolute bottom-4 right-4 rounded-md shadow border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-gray-100 gap-2 hover:bg-[#aeaeae] dark:hover:bg-[#aeaeae] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 
+                  ${loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
+                `}
+                onClick={handleHumanize}
+                disabled={loading}
+              >
+                {loading ? loader() : 'Humanize'}
+              </button>
+            </div>
+          </div>
+          <div className="bg-white p-4">
+            <div className="relative">
+              <textarea 
+                disabled={true}
+                value={humanizedText}
+                className="bg-white p-4 w-[600px] h-[400px] p-4 border border-solid border-gray-600 rounded-lg focus:outline-none outline-none resize-none focus:ring-2 focus:ring-[#333] focus:border-transparent" 
+                placeholder="Humanized text will appear here">
+              </textarea>
+              <button 
+                disabled={(!loading && humanizedText.length > 0) ? false : true}
+                className={`absolute bottom-4 right-4 flex flex-row gap-1 items-center bg-foreground px-2 py-1 rounded-md text-sm text-gray-100 shadow 
+                  ${(loading || humanizedText.length < 1) ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
+                `}
+                onClick={() => {
+                  if (!loading && humanizedText.length > 0) {
+                    navigator.clipboard.writeText(humanizedText);
+                    setToggleCopy(true);
+                    setTimeout(() => {
+                      setToggleCopy(false);
+                    }, 1000);
+                  }
+                }}
+              >
+                <Image
+                  aria-hidden
+                  src={!toggleCopy ? '/copy.svg' : '/check.svg'}
+                  alt="Copy icon"
+                  width={16}
+                  height={16}
+                /> 
+                copy
+              </button>
+            </div>
+          </div>
+        </div>
+```
+
+As you can see above, we have also added a `word count` feature with a humanized `text copy` feature.
+
+Now, let's create a function to handle the `Humanize` button click event.
+
+```typescript
+  const handleHumanize = () => {
+    console.log('Humanizing...');
+    setLoading(true);
+    humanaizeAiText(text)
+      .then((humanized) => {
+        setHumanizedText(humanized);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+```
+
+It sets the loading state to `true`, calls the `humanaizeAiText` function with the user input text, and sets the humanized text in the state. If there's an error, it logs the error to the console. Finally, it sets the loading state to `false`.
+
+Now, let's create a function to send a POST request to the API to humanize the AI-generated text.
+
+```typescript
+  const humanaizeAiText = async (aiText: string) => {
+    console.log('Sending POST request /api/humanaize');
+    try {
+      const response = await fetch('/api/humanaize', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ aiText }),
+      });
+
+      if (!response.ok) {
+        throw new Error('API request failed');
+      }
+
+      const data = await response.json();
+      return data.message;
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while fetching the reply.');
+      return 'No response available';
+    } finally {
+      console.log('POST request /api/humanaize completed');
+    }
+  };
+```
+
+It gets the AI-generated text as input and sends a POST request to the `/api/humanaize` route with the AI-generated text. It then returns the humanized text generated by the AI model.
+
+Let's add very simple yet cool `loader()`:
+
+```typescript
+
+  const loader = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24">
+      <circle cx={4} cy={12} r={3} fill="currentColor">
+        <animate id="svgSpinners3DotsScale0" attributeName="r" begin="0;svgSpinners3DotsScale1.end-0.25s" dur="0.75s" values="3;.2;3" />
+      </circle>
+      <circle cx={12} cy={12} r={3} fill="currentColor">
+        <animate attributeName="r" begin="svgSpinners3DotsScale0.end-0.6s" dur="0.75s" values="3;.2;3" />
+      </circle>
+      <circle cx={20} cy={12} r={3} fill="currentColor">
+        <animate id="svgSpinners3DotsScale1" attributeName="r" begin="svgSpinners3DotsScale0.end-0.45s" dur="0.75s" values="3;.2;3" />
+      </circle>
+    </svg>
+  );
+```
+
+We have done with the `Home` component. 
+
+If you followed along, you should have a fully functional AI text humanizer tool that can convert AI-generated text into human-like text.
+
+Next step let's quickly set up environment variables and test it locally.
+
+### Environment Variables
+
+Open `.env.local` file and add the following environment variables:
+
+```bash
+NEXT_PUBLIC_AIML_API_KEY=...
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+```
+
+### Run Locally
+
+Now, you can run the application locally with the following command:
+
+```bash
+npm run dev
+```
+
+Open http://localhost:3000 in your browser to see the application running.
+
+You should see something similar to this:
+![Main Page](public/main_page.png)
+
+Let's try to humanize some AI-generated text. Paste the AI-generated text in the left textarea and click the `Humanize` button. The humanized text will appear in the right textarea.
+
+![AI generated and HumanAIzed text](public/not_ai.png)
+
+Now, you can simply copy the humanized text by clicking the `copy` button. And pate AI detector websites. There are bunch of similar websites.
+
+Here's the video on YouTube, where I showed exact use cases of this tool and checked the humanized text on AI detector websites.
+
+[![HumanAIze AI text tool](https://img.shields.io/badge/Watch%20on-YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/CLrENdjIe58?si=i8k6A2EtXFwc1fSQ)
+
+If you want to learn more about Building AI powered projects or whatever. Let me know. It's FREE! 🎉 -> [Learn now!](https://topmate.io/join/abdibrokhim)
+
+So, that's it! But, we are not done yet. We need to deploy our application to Vercel.
+
+### Deploy to Vercel
+
+To deploy the application to Vercel, you need to create a Vercel account. Please follow this tutorial to deploy your Next.js application to Vercel: [How to Deploy Apps to Vercel with ease](https://medium.com/@abdibrokhim/how-to-deploy-apps-to-vercel-with-ease-93fa0d0bb687).
+
+Once you have deployed the application, you can share the URL with others to use the AI text humanizer tool.
+
+Meanwhile, you can try the live demo of the AI text humanizer tool here: [HumanAIze AI text tool](https://humanaize.vercel.app/).
 
 
 ## Conclusion
 
+In this tutorial, we built an AI text humanizer tool that can convert AI-generated text into human-like text. We used AI/ML API to generate human-like text, Next.js for the frontend, Tailwind CSS for styling, Clerk Auth for user authentication, and Vercel for deployment.
 
-## References
+I hope you enjoyed building this project and learned something new along the way. If you have any questions or feedback, feel free to [reach out to me](https://topmate.io/join/abdibrokhim). I'm always happy to help! 🚀 
 
+---
+
+All the code for this project is available on GitHub: [HumanAIze AI text tool](https://github.com/abdibrokhim/humanaize/).
+
+Save this tutorial for later reference: [Comprehensive and Step-by-Step Tutorial on Building an AI text Humanizer with AI/ML API, Next.js, Tailwind CSS and Integration with Clerk Auth and Deploying to Vercel](https://medium.com/@abdibrokhim/comprehensive-and-step-by-step-tutorial-on-building-an-ai-text-humanizer-with-ai-ml-api-next-js-d42c4850a31c). (it's always available on Medium) and [Dev Community](https://dev.to/abdibrokhim/step-by-step-tutorial-on-building-an-ai-text-humanizer-with-aiml-api-and-integration-with-clerk-auth-and-deploying-to-vercel-moj).
+
+### Other interesting tutorials:
+with step-by-step guide and screenshots:
+
+on Medium:
+
+* [Building a Chrome Extension from Scratch with AI/ML API, Deepgram Aura, and IndexedDB Integration](https://medium.com/@abdibrokhim/building-a-chrome-extension-from-scratch-with-ai-ml-api-deepgram-aura-and-indexeddb-integration-2e5d1e6fbfb0)
+
+* [Building an AI Sticker Maker Platform with AI/ML API, Next.js, React, and Tailwind CSS using OpenAI GPT-4o and DALL-E 3 Models.](https://medium.com/@abdibrokhim/building-an-ai-sticker-maker-platform-with-ai-ml-api-next-js-8b0767a7e159)
+
+on Dev Community:
+
+* [Building a Chrome Extension from Scratch with AI/ML API, Deepgram Aura, and IndexedDB Integration](https://dev.to/abdibrokhim/building-a-chrome-extension-from-scratch-with-aiml-api-deepgram-aura-and-indexeddb-integration-25hd)
+
+* [Building an AI Sticker Maker Platform with AI/ML API, Next.js, React, and Tailwind CSS using OpenAI GPT-4o and DALL-E 3 Models.](https://dev.to/abdibrokhim/building-an-ai-sticker-maker-platform-with-aiml-api-nextjs-react-and-tailwind-css-using-openai-gpt-4o-and-dalle-3-models-46ip)
+
+---
+
+> Get Started with **AI/ML API** for FREE ($0 US dollars): [Click me, let's Cook, bro!](https://aimlapi.com/?via=ibrohim) 🧑‍🍳
+
+> **A$AP**; Use the code `IBROHIMXAIMLAPI` for 1 week FREE Access [Let's get started, bruh!](https://aimlapi.com/?via=ibrohim) 😱
+
+
+Tutorial was written by [Ibrohim Abdivokhidov](https://www.linkedin.com/in/abdibrokhim/), (follow this guy 🐐 on LinkedIn). Why, tho?
+
+> ps: 1️⃣ AI/ML API Regional Ambassador in Central Asia | founder CEO at Open Community (150+ 🧑‍💻) | 60+ Hackathons | OS contributor at Anarchy Labs (477+ ⭐️), Langflow (31,2K+ ⭐️) | Mentor (200K+ students) | Author (5+ 📚)... umm and more stuff cookin' up -> [imcook.in](https://imcook.in)!
