@@ -94,7 +94,7 @@ export default function Home() {
   );
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen pb-20 gap-8 p-4 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen pb-28 gap-8 p-4 font-[family-name:var(--font-geist-sans)]">
       <Analytics />
       <div className="absolute top-4 right-8">
         {!isSignedIn ? (
@@ -109,9 +109,24 @@ export default function Home() {
 
       <main className="flex flex-col gap-8 row-start-2 items-center">
         <div className="Editor_title3__hWeAn">
-          <h1 className="Editor_editor__header__GIEq6 font-black">HumanAIze AI text</h1>
+          <h1 className="Editor_editor__header__GIEq6 font-bold"><span className='italic font-black'>HumanAIze </span>AI text</h1>
           <h2 className="Editor_editor__subheader__uH98a font-bold">HumanAIze AI text with the smartest AI humanizer</h2>
           <p className="Editor_editor__description__sjr_h">Transform your AI-generated content into natural, human-like text with the ultimate HumanAIze AI text tool. This ai-to-human text converter effortlessly converts output from ChatGPT, Bard, Jasper, Grammarly, GPT4, and other AI text generators into text indistinguishable from human writing. Achieve 100% originality and enhance your content creation with the best HumanAIze AI solution available.</p>
+          <div className='bg-white p-2'>
+            <a
+              className="flex items-center"
+              href="https://aimlapi.com/?via=ibrohim"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image 
+                src="/powered_by_aimlapi.svg"
+                alt="Powered by AIML API"
+                width={120}
+                height={120}
+              />
+            </a>
+          </div>
         </div>
         <div className="flex gap-2 items-center flex-col lg:flex-row">
           <div className="bg-white p-4">
@@ -172,52 +187,54 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center bg-white p-4">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://twitter.com/abdibrokhim"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/X_logo_2023_original.svg"
-            alt="X icon"
-            width={16}
-            height={16}
-          />
-          X (prev. Twitter)
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://www.linkedin.com/in/abdibrokhim/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/LinkedIn_icon.svg"
-            alt="LinkedIn icon"
-            width={16}
-            height={16}
-          />
-          LinkedIn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://github.com/abdibrokhim/humanaize"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/github-mark.svg"
-            alt="Github icon"
-            width={16}
-            height={16}
-          />
-          Open Source →
-        </a>
+      <footer className="row-start-3 flex flex-col gap-6 flex-wrap items-center justify-center mt-8">
+        <div className='flex gap-6 flex-wrap items-center justify-center bg-white p-2'>
+          <a
+            className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+            href="https://twitter.com/abdibrokhim"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              aria-hidden
+              src="/X_logo_2023_original.svg"
+              alt="X icon"
+              width={16}
+              height={16}
+            />
+            X (prev. Twitter)
+          </a>
+          <a
+            className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+            href="https://www.linkedin.com/in/abdibrokhim/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              aria-hidden
+              src="/LinkedIn_icon.svg"
+              alt="LinkedIn icon"
+              width={16}
+              height={16}
+            />
+            LinkedIn
+          </a>
+          <a
+            className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+            href="https://github.com/abdibrokhim/humanaize"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              aria-hidden
+              src="/github-mark.svg"
+              alt="Github icon"
+              width={16}
+              height={16}
+            />
+            Open Source →
+          </a>
+        </div>
       </footer>
       <script
         src="https://topmate-embed.s3.ap-south-1.amazonaws.com/v1/topmate-embed.js"
