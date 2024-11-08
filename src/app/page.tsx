@@ -36,17 +36,50 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        throw new Error('API request failed');
+        // throw new Error('API request failed');
+        console.log('API request failed');
       }
 
       const data = await response.json();
       return data.message;
     } catch (error) {
+      console.log('An error occurred while fetching the reply.');
+      console.error('Error:', error);
+      // alert('An error occurred while fetching the reply.');
+      // return 'No response available';
+      // send request to /api/gpt
+      console.log('Trying GPT...');
+      return tryGpt(aiText);
+    } finally {
+      console.log('POST request /api/humanaize completed');
+    }
+  };
+  
+  const tryGpt = async (aiText: string) => {
+    console.log('Sending POST request /api/gpt');
+    try {
+      const response = await fetch('/api/gpt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ aiText }),
+      });
+
+      if (!response.ok) {
+        // throw new Error('API request failed');
+        console.log('API request failed');
+      }
+
+      const data = await response.json();
+      return data.message;
+    } catch (error) {
+      console.log('An error occurred while fetching the reply.');
       console.error('Error:', error);
       alert('An error occurred while fetching the reply.');
       return 'No response available';
     } finally {
-      console.log('POST request /api/humanaize completed');
+      console.log('POST request /api/gpt completed');
     }
   };
   
