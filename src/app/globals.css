@@ -3,8 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --background: #000;
-  --foreground: #fff;
+  --background: #fff;
+  --foreground: #000;
+  --selection-bg: #000;
+  --selection-color: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #000;
+    --foreground: #fff;
+    --selection-bg: #fff;
+    --selection-color: #000;
+  }
 }
 
 body {
@@ -13,13 +24,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   width: 100%;
   min-height: 100vh;
-  background-image: radial-gradient(#000 1px, transparent 0);
+  background-image: radial-gradient(var(--foreground) 1px, transparent 0);
   background-size: 1.875rem 1.875rem;
-  background-position: center -.9375rem;
-  background-color: #fff;
+  background-position: center -0.9375rem;
 }
 
 ::selection {
-  background-color: #000;
-  color: #fff;
+  background-color: var(--selection-bg);
+  color: var(--selection-color);
 }

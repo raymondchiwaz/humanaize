@@ -13,6 +13,7 @@ export default function Home() {
 
   const [loading, setLoading] = useState(false);
   const [wordCount, setWordCount] = useState(0);
+  const [humanizedTextWordCount, setHumanizedTextWordCount] = useState(0);
   const [text, setText] = useState('');
   const [humanizedText, setHumanizedText] = useState('');
   const [toggleCopy, setToggleCopy] = useState(false);
@@ -94,6 +95,8 @@ export default function Home() {
     humanaizeAiText(text)
       .then((humanized) => {
         setHumanizedText(humanized);
+        const count = humanized.trim() === '' ? 0 : humanized.trim().split(/\s+/).length;
+        setHumanizedTextWordCount(count);
         if (!isSignedIn) {
           localStorage.setItem('isUsedOneTime', 'true');
           setIsUsedOneTime(true);
@@ -132,7 +135,7 @@ export default function Home() {
       <div className="absolute top-4 right-8">
         {!isSignedIn ? (
           <SignInButton>
-            <button className="bg-foreground text-gray-100 px-4 py-2 rounded-md">Sign In</button>
+            <button className="bg-foreground text-gray-100 px-4 py-2 rounded-md dark:bg-background dark:text-gray-900">Sign In</button>
           </SignInButton> ) 
           : (<SignedIn>
               <UserButton />
@@ -141,11 +144,11 @@ export default function Home() {
       </div> 
 
       <main className="flex flex-col gap-8 row-start-2 items-center">
-        <div className="Editor_title3__hWeAn">
-          <h1 className="Editor_editor__header__GIEq6 font-bold"><span className='italic font-black'>HumanAIze </span>AI text</h1>
-          <h2 className="Editor_editor__subheader__uH98a font-bold">HumanAIze AI text with the smartest AI humanizer</h2>
-          <p className="Editor_editor__description__sjr_h">Transform your AI-generated content into natural, human-like text with the ultimate HumanAIze AI text tool. This ai-to-human text converter effortlessly converts output from ChatGPT, Bard, Jasper, Grammarly, GPT4, and other AI text generators into text indistinguishable from human writing. Achieve 100% originality and enhance your content creation with the best HumanAIze AI solution available.</p>
-          <div className='bg-white p-2'>
+        <div className="Editor_title3__hWeAn ">
+          <h1 className="Editor_editor__header__GIEq6 font-bold bg-white dark:bg-background dark:text-white"><span className='italic font-black'>HumanAIze </span>AI text</h1>
+          <h2 className="Editor_editor__subheader__uH98a font-bold bg-white dark:bg-background dark:text-white">HumanAIze AI text with the smartest AI humanizer</h2>
+          <p className="Editor_editor__description__sjr_h bg-white dark:bg-background dark:text-white">Transform your AI-generated content into natural, human-like text with the ultimate HumanAIze AI text tool. This ai-to-human text converter effortlessly converts output from ChatGPT, Bard, Jasper, Grammarly, GPT4, and other AI text generators into text indistinguishable from human writing. Achieve 100% originality and enhance your content creation with the best HumanAIze AI solution available.</p>
+          <div className='bg-background text-black dark:bg-foreground p-2'>
             <a
               className="flex items-center"
               href="https://aimlapi.com/?via=ibrohim"
@@ -162,39 +165,42 @@ export default function Home() {
           </div>
         </div>
         <div className="flex gap-2 items-center flex-col lg:flex-row">
-          <div className="bg-white p-4">
+          <div className="bg-white dark:bg-background p-4">
             <div className="relative">
               <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                className="w-[600px] h-[400px] p-4 pb-12 border border-solid border-gray-600 rounded-lg focus:outline-none resize-none focus:ring-2 focus:ring-[#333] focus:border-transparent"
+                className="w-[600px] h-[400px] p-4 pb-12 dark:bg-background dark:text-white border border-solid border-gray-600 rounded-lg focus:outline-none resize-none focus:ring-2 focus:ring-[#333] focus:border-transparent"
                 placeholder="Paste your AI-generated text here"
               ></textarea>
-              <div className="absolute bottom-4 left-4 bg-foreground px-2 py-1 rounded-md text-sm text-gray-100 shadow">
+              <div className="absolute bottom-4 left-4 dark:bg-foreground dark:text-black bg-black text-white px-2 py-1 rounded-md text-sm text-gray-100 shadow">
                 {wordCount} words
               </div>
               <button
-                className={`absolute bottom-4 right-4 rounded-md shadow border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-gray-100 gap-2 hover:bg-[#aeaeae] dark:hover:bg-[#aeaeae] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 
-                  ${loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
+                className={`absolute bottom-4 right-4 dark:bg-foreground dark:text-black bg-black text-white rounded-md shadow border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-gray-100 gap-2 hover:bg-[#aeaeae] dark:hover:bg-[#aeaeae] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 
+                  ${(loading || text.trim().length < 100) ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
                 `}
-                onClick={handleHumanize}
+                onClick={text.trim().length > 100 ? handleHumanize : undefined}
                 disabled={loading}
               >
                 {loading ? loader() : 'Humanize'}
               </button>
             </div>
           </div>
-          <div className="bg-white p-4">
+          <div className="bg-white dark:bg-background p-4">
             <div className="relative">
               <textarea 
                 disabled={true}
                 value={humanizedText}
-                className="bg-white p-4 w-[600px] h-[400px] p-4 border border-solid border-gray-600 rounded-lg focus:outline-none outline-none resize-none focus:ring-2 focus:ring-[#333] focus:border-transparent" 
+                className="bg-white p-4 w-[600px] h-[400px] p-4 dark:bg-background dark:text-white border border-solid border-gray-600 rounded-lg focus:outline-none outline-none resize-none focus:ring-2 focus:ring-[#333] focus:border-transparent" 
                 placeholder="Humanized text will appear here">
               </textarea>
+              <div className="absolute bottom-4 left-4 dark:bg-foreground dark:text-black bg-black text-white px-2 py-1 rounded-md text-sm text-gray-100 shadow">
+                {humanizedTextWordCount} words
+              </div>
               <button 
                 disabled={(!loading && humanizedText.length > 0) ? false : true}
-                className={`absolute bottom-4 right-4 flex flex-row gap-1 items-center bg-foreground px-2 py-1 rounded-md text-sm text-gray-100 shadow 
+                className={`absolute bottom-4 right-4 dark:bg-foreground dark:text-black bg-black text-white flex flex-row gap-1 items-center bg-foreground px-2 py-1 rounded-md text-sm text-gray-100 shadow 
                   ${(loading || humanizedText.length < 1) ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
                 `}
                 onClick={() => {
@@ -209,6 +215,7 @@ export default function Home() {
               >
                 <Image
                   aria-hidden
+                  className='dark:bg-black'
                   src={!toggleCopy ? '/copy.svg' : '/check.svg'}
                   alt="Copy icon"
                   width={16}
@@ -221,7 +228,7 @@ export default function Home() {
         </div>
       </main>
       <footer className="row-start-3 flex flex-col gap-6 flex-wrap items-center justify-center mt-8">
-        <div className='flex gap-6 flex-wrap items-center justify-center bg-white p-2'>
+        <div className='flex gap-6 flex-wrap items-center justify-center bg-white dark:bg-background dark:text-white p-2'>
           <a
             className="flex items-center gap-2 hover:underline hover:underline-offset-4"
             href="https://twitter.com/abdibrokhim"
@@ -230,6 +237,7 @@ export default function Home() {
           >
             <Image
               aria-hidden
+              className='dark:bg-white'
               src="/X_logo_2023_original.svg"
               alt="X icon"
               width={16}
@@ -245,6 +253,7 @@ export default function Home() {
           >
             <Image
               aria-hidden
+              className='dark:bg-white'
               src="/LinkedIn_icon.svg"
               alt="LinkedIn icon"
               width={16}
@@ -260,6 +269,7 @@ export default function Home() {
           >
             <Image
               aria-hidden
+              className='dark:bg-white'
               src="/github-mark.svg"
               alt="Github icon"
               width={16}
