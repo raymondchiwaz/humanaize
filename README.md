@@ -36,9 +36,9 @@ How to use HumanAIze? Watch on YouTube, A$AP! 🚀
 (it's absolutely FREE! 🎉)
 
 ### 🚀 Powered by AI/ML API
-With AI/ML API I can access to over 200 AI models with one API endpoint. It's super cool! Now I can switch between models with just one click. 🔥 [Here's is how... click me](https://huggingface.co/spaces/abdibrokhim/ai-sticker-maker/blob/3538c96ae8838c2b4e94977632150f7bd3c87f61/app.py#L117)
+With AI/ML API I can access to over 200 AI models with one API endpoint. It's super cool! Now I can switch between models with just one click. 🔥 [Here's is how... click me](https://aimlapi.com/?via=ibrohim)
 
-Step-by-Step tutorial available on [TUTORIAL.md]().
+Step-by-Step tutorial available on [TUTORIAL.md](https://github.com/abdibrokhim/humanaize/blob/main/TUTORIAL.md)
 
 ## 📦 Run Locally
 
@@ -71,7 +71,12 @@ CLERK_SECRET_KEY=sk_test_
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 ```
-then,
+
+Check out the following tutorials to get started:
+
+[How to get API Key from AI/ML API. Quick step-by-step tutorial with screenshots for better understanding.](https://medium.com/@abdibrokhim/how-to-get-api-key-from-ai-ml-api-225a69d0bb25)
+
+[How to create account on Clerk and setup a new project.](https://medium.com/@abdibrokhim/how-to-create-account-on-clerk-and-setup-a-new-project-532be3545642)
 
 Run the development server with:
 
@@ -104,7 +109,7 @@ Or just create an issue over here.
 
 ## 👋 Want to Contribute?
 
-Kindly check the [CONTRIBUTING.md](https://github.com/abdibrokhim/loom-dl-web/blob/main/CONTRIBUTING.md)
+Kindly check the [CONTRIBUTING.md](https://github.com/abdibrokhim/humanaize/blob/main/CONTRIBUTING.md)
 
 ## ⭐️ Star History
 
@@ -113,6 +118,6 @@ Kindly check the [CONTRIBUTING.md](https://github.com/abdibrokhim/loom-dl-web/bl
 ## 🙏 Support
 If you wish to support further development and feel extra awesome, you can [Donate](https://buymeacoffee.com/abdibrokhim/), become a [Patron](https://www.patreon.com/abdibrokhim) or [Follow on LinkedIn](https://www.linkedin.com/in/abdibrokhim/).
 
-## 🦄 Want to learn builf stuff from coool guy?
+## 🦄 Want to learn build stuff from coool guy?
 
-Here's my topmate profile https://topmate.io/join/abdibrokhim book session with me. it's Absolutely FREE! 🎉 (free services for everyone , i want to help as much as people possible, so far 200K developers, let's goooooo, [imcook.in](https://imcook.in))
+Here's my topmate profile https://topmate.io/join/abdibrokhim book session with me. it's Absolutely FREE! 🎉 (free services for everyone , i want to help as much as people possible, so far i could help 200K developers, let's goooooo, [imcook.in](https://imcook.in))
