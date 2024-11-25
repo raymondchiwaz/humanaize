@@ -16,7 +16,7 @@ const OverlayCard = () => {
     setShowOverlay(false);
 
     // Show the overlay again after 5 minutes
-    setTimeout(showAgain, 5000); // 5 minutes
+    setTimeout(showAgain, 300000); // 5 minutes
   };
 
   const showAgain = () => {
@@ -57,7 +57,7 @@ const OverlayCard = () => {
           className="flex flex-row gap-2 bg-[#A1A2A5] text-black w-full items-center justify-center py-2 rounded-lg text-md font-bold hover:bg-[#BBBCBE] transition cursor-pointer"
         >
           <a
-            href="https://theopencommunity.vercel.app/"
+            href="https://theopencommunity.co"
             className="text-[#000000] hover:underline font-bold"
             target="_blank"
             rel="noopener noreferrer"
