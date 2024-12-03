@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useUser, SignInButton, SignedIn, UserButton } from '@clerk/nextjs';
 import { Analytics } from "@vercel/analytics/react";
 import { useRouter } from 'next/navigation'
 import Image from "next/image";
@@ -18,7 +17,6 @@ export default function Home() {
   const [text, setText] = useState('');
   const [humanizedText, setHumanizedText] = useState('');
   const [toggleCopy, setToggleCopy] = useState(false);
-  const { isSignedIn } = useUser();
   const [isUsedOneTime, setIsUsedOneTime] = useState(false);
 
   useEffect(() => {
@@ -86,11 +84,6 @@ export default function Home() {
   };
   
   const handleHumanize = () => {
-    if (isUsedOneTime && !isSignedIn) {
-      router.push('/sign-in');
-      return;
-    }
-
     console.log('Humanizing...');
     setLoading(true);
     humanaizeAiText(text)
@@ -98,10 +91,6 @@ export default function Home() {
         setHumanizedText(humanized);
         const count = humanized.trim() === '' ? 0 : humanized.trim().split(/\s+/).length;
         setHumanizedTextWordCount(count);
-        if (!isSignedIn) {
-          localStorage.setItem('isUsedOneTime', 'true');
-          setIsUsedOneTime(true);
-        }
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -133,18 +122,6 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen pb-28 gap-8 p-4 font-[family-name:var(--font-geist-sans)]">
       <Analytics />
-      {/* <OverlayCard /> */}
-      <div className="absolute top-4 right-8">
-        {!isSignedIn ? (
-          <SignInButton>
-            <button className="bg-foreground text-gray-100 px-4 py-2 rounded-md dark:bg-background dark:text-gray-900">Sign In</button>
-          </SignInButton> ) 
-          : (<SignedIn>
-              <UserButton />
-            </SignedIn>)
-        }
-      </div> 
-
       <main className="flex flex-col gap-8 row-start-2 items-center">
         <div className="Editor_title3__hWeAn ">
           <h1 className="Editor_editor__header__GIEq6 font-bold bg-white dark:bg-background dark:text-white"><span className='italic font-black'>HumanAIze </span>AI text</h1>
