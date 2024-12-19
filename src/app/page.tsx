@@ -86,7 +86,7 @@ export default function Home() {
   const handleHumanize = () => {
     console.log('Humanizing...');
     setLoading(true);
-    humanaizeAiText(text)
+    tryGpt(text)
       .then((humanized) => {
         setHumanizedText(humanized);
         const count = humanized.trim() === '' ? 0 : humanized.trim().split(/\s+/).length;
@@ -178,12 +178,12 @@ export default function Home() {
                 {humanizedTextWordCount} words
               </div>
               <button 
-                disabled={(!loading && humanizedText.length > 0) ? false : true}
+                disabled={(!loading) ? false : true}
                 className={`absolute bottom-4 right-4 dark:bg-foreground dark:text-black bg-black text-white flex flex-row gap-1 items-center bg-foreground px-2 py-1 rounded-md text-sm text-gray-100 shadow 
-                  ${(loading || humanizedText.length < 1) ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
+                  ${(loading) ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
                 `}
                 onClick={() => {
-                  if (!loading && humanizedText.length > 0) {
+                  if (!loading) {
                     navigator.clipboard.writeText(humanizedText);
                     setToggleCopy(true);
                     setTimeout(() => {

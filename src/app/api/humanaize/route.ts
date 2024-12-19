@@ -25,7 +25,6 @@ export async function POST(request: Request) {
                     ...writingSamples,
                     { role: "user", content: aiText },
                 ],
-                max_tokens: 512,
             }),
         });
 
