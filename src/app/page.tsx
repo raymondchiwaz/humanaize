@@ -66,34 +66,52 @@ export default function Home() {
         body: JSON.stringify({ aiText }),
       });
 
+      const data = await response.json();
+      
       if (!response.ok) {
-        // throw new Error('API request failed');
-        console.log('API request failed');
+        throw new Error(data.error || 'API request failed');
       }
 
-      const data = await response.json();
-      return data.message;
+      if (!data.message) {
+        throw new Error('Invalid response format');
+      }
+
+      return data;
     } catch (error) {
-      console.log('An error occurred while fetching the reply.');
       console.error('Error:', error);
-      alert('An error occurred while fetching the reply.');
-      return 'No response available';
+      throw error;
     } finally {
       console.log('POST request /api/gpt completed');
     }
   };
   
   const handleHumanize = () => {
+    if (text.trim().length < 100) {
+      return;
+    }
+    
     console.log('Humanizing...');
     setLoading(true);
     tryGpt(text)
-      .then((humanized) => {
-        setHumanizedText(humanized);
-        const count = humanized.trim() === '' ? 0 : humanized.trim().split(/\s+/).length;
-        setHumanizedTextWordCount(count);
+      .then((response) => {
+        if (response && response.message) {
+          setHumanizedText(response.message);
+          const count = response.message.trim() === '' ? 0 : response.message.trim().split(/\s+/).length;
+          setHumanizedTextWordCount(count);
+        } else {
+          setHumanizedText('Error: Could not process the text. Please try again.');
+          setHumanizedTextWordCount(0);
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
+        const errorMessage = error?.message || 'Could not process the text. Please check your API configuration and try again.';
+        setHumanizedText(`Error: ${errorMessage}`);
+        setHumanizedTextWordCount(0);
+        
+        if (errorMessage.includes('configuration error')) {
+          console.error('Please check your Google API credentials in .env.local');
+        }
       })
       .finally(() => {
         setLoading(false);
